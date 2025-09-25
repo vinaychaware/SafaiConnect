@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Waste Management System</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="login-container">
+                <div class="login-header">  
+                    <i class="fas fa-recycle"></i>
+                    <h1>Smart Waste Management</h1>
+                    <p>Efficient • Transparent • Sustainable</p>
+                </div>
+                <div class="login-form">
+                    <h2>Sign In</h2>
+                    <select id="userRole" class="form-control">
+                        <option value="">Select Your Role</option>
+                        <option value="superadmin">Superadmin</option>
+                        <option value="admin">Admin</option>
+                        <option value="green-champion">Green Champion</option>
+                        <option value="worker">Worker</option>
+                        <option value="citizen">Citizen</option>
+                    </select>
+                    <input type="email" id="email" class="form-control" placeholder="Email Address" value="demo@example.com">
+                    <input type="password" id="password" class="form-control" placeholder="Password" value="password">
+                    <button id="loginBtn" class="btn btn-primary">Sign In</button>
+                    <div class="demo-accounts">
+                        <p>Demo Accounts Available</p>
+                        <small>Select any role above and use the pre-filled credentials</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Header -->
+        <div id="navHeader" class="nav-header hidden">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-recycle"></i>
+                    <span>Smart Waste Management</span>
+                </div>
+                <div class="nav-user">
+                    <span id="userInfo"></span>
+                    <button id="logoutBtn" class="btn btn-ghost">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <div id="sidebar" class="sidebar hidden">
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Dynamic navigation items will be inserted here -->
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="mainContent" class="main-content hidden">
+            <!-- Dashboard content will be dynamically loaded here -->
+        </div>
+
+        <!-- Modals -->
+        <div id="modalOverlay" class="modal-overlay hidden">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Modal Title</h3>
+                    <button class="modal-close" id="modalClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Modal content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Container -->
+        <div id="notifications" class="notifications-container"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils/constants.js"></script>
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/notifications.js"></script>
+    <script src="js/components/navigation.js"></script>
+    <script src="js/auth/auth.js"></script>
+    <script src="js/dashboards/superadmin.js"></script>
+    <script src="js/dashboards/admin.js"></script>
+    <script src="js/dashboards/green-champion.js"></script>
+    <script src="js/dashboards/worker.js"></script>
+    <script src="js/dashboards/citizen.js"></script>
+    <script src="js/features/complaints.js"></script>
+    <script src="js/features/tracking.js"></script>
+    <script src="js/features/training.js"></script>
+    <script src="js/features/ecommerce.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
