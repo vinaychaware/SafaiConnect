@@ -1,3 +1,13 @@
+/* Logo for React app */
+.logo-react {
+	height: 64px;
+	margin: 0 auto 1.5rem auto;
+	display: block;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+	@apply bg-gray-50 text-gray-800;
+}

@@ -1,10 +1,10 @@
 :root {
   --primary: #22C55E;
-  --primary-dark: #16A34A;
-  --primary-light: #86EFAC;
-  --secondary: #3B82F6;
-  --secondary-dark: #2563EB;
-  --accent: #F97316;
+  --primary-dark: #15803d;
+  --primary-light: #bbf7d0;
+  --secondary: #ffffff;
+  --secondary-dark: #e5e7eb;
+  --accent: #16a34a;
   --success: #10B981;
   --warning: #F59E0B;
   --error: #EF4444;
@@ -27,13 +27,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--gray-50);
-  color: var(--gray-800);
+  background-color: var(--secondary);
+  color: var(--primary-dark);
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 /* Utility Classes */
@@ -67,8 +69,8 @@ body {
 .login-container {
   background: var(--white);
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  padding: 3rem;
+  box-shadow: 0 8px 32px rgba(34,197,94,0.10), 0 1.5px 4px rgba(0,0,0,0.04);
+  padding: 2.5rem 1.5rem;
   max-width: 420px;
   width: 100%;
   text-align: center;
@@ -111,10 +113,11 @@ body {
   padding: 12px 16px;
   border: 1px solid var(--gray-300);
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   margin-bottom: 1rem;
-  transition: all 0.2s ease;
+  transition: border 0.2s, box-shadow 0.2s;
   background-color: var(--white);
+  outline: none;
 }
 
 .form-control:focus {
@@ -128,15 +131,16 @@ body {
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s, box-shadow 0.2s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   text-decoration: none;
+  box-shadow: 0 1.5px 4px rgba(34,197,94,0.08);
 }
 
 .btn-primary {
@@ -144,12 +148,18 @@ body {
   color: var(--white);
   width: 100%;
   margin-bottom: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.2s;
 }
 
 .btn-primary:hover {
   background-color: var(--primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+  box-sizing: border-box;
 }
 
 .btn-secondary {
@@ -709,43 +719,65 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .main-content {
     margin-left: 0;
     padding: 1.5rem;
   }
-  
   .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-  
-  .sidebar.open {
-    transform: translateX(0);
+    width: 220px;
   }
 }
 
-@media (max-width: 768px) {
-  .nav-container {
-    padding: 0 1rem;
+@media (max-width: 900px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  
   .main-content {
     padding: 1rem;
   }
-  
-  .dashboard-stats {
-    grid-template-columns: 1fr;
+  .sidebar {
+    position: fixed;
+    left: -220px;
+    top: var(--header-height);
+    transition: left 0.3s;
+    z-index: 1000;
   }
-  
-  .modal-overlay {
-    padding: 1rem;
+  .sidebar.open {
+    left: 0;
   }
-  
+}
+
+@media (max-width: 600px) {
+  .login-container, .card, .modal {
+    padding: 1rem !important;
+    border-radius: 10px !important;
+  }
+  .dashboard-header, .dashboard-title, .dashboard-subtitle {
+    padding: 0.5rem 0 !important;
+    font-size: 1.1rem !important;
+  }
+  .main-content {
+    padding: 0.5rem;
+  }
+  .nav-container {
+    padding: 0 0.5rem;
+  }
+  .sidebar {
+    width: 100vw;
+    left: -100vw;
+  }
+  .sidebar.open {
+    left: 0;
+  }
   .notifications-container {
-    right: 1rem;
-    left: 1rem;
+    right: 0.5rem;
+    left: 0.5rem;
     max-width: none;
+  }
+  .table {
+    font-size: 0.85rem;
   }
 }
 
