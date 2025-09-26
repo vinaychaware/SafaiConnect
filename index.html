@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Waste Management System</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="./styles/main.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -13,7 +14,9 @@
         <div id="loginScreen" class="screen active">
             <div class="login-container">
                 <div class="login-header">  
-                    <img src="styles/logo.png" alt="Safai Connect Logo" class="logo-main" />
+                    <div class="logo-placeholder">
+                        <i class="fas fa-leaf" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    </div>
                     <h1>Smart Waste Management</h1>
                     <p>Efficient • Transparent • Sustainable</p>
                 </div>
@@ -42,7 +45,7 @@
         <div id="navHeader" class="nav-header hidden">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <img src="styles/logo.png" alt="Safai Connect Logo" class="logo-nav" />
+                    <i class="fas fa-leaf" style="color: var(--primary); font-size: 1.5rem; margin-right: 0.5rem;"></i>
                     <span>Smart Waste Management</span>
                 </div>
                 <div class="nav-user">
@@ -86,21 +89,21 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils/constants.js"></script>
-    <script src="js/utils/helpers.js"></script>
-    <script src="js/components/modal.js"></script>
-    <script src="js/components/notifications.js"></script>
-    <script src="js/components/navigation.js"></script>
-    <script src="js/auth/auth.js"></script>
-    <script src="js/dashboards/superadmin.js"></script>
-    <script src="js/dashboards/admin.js"></script>
-    <script src="js/dashboards/green-champion.js"></script>
-    <script src="js/dashboards/worker.js"></script>
-    <script src="js/dashboards/citizen.js"></script>
-    <script src="js/features/complaints.js"></script>
-    <script src="js/features/tracking.js"></script>
-    <script src="js/features/training.js"></script>
-    <script src="js/features/ecommerce.js"></script>
-    <script src="js/main.js"></script>
+    <script src="./js/utils/constants.js"></script>
+    <script src="./js/utils/helpers.js"></script>
+    <script src="./js/components/modal.js"></script>
+    <script src="./js/components/notifications.js"></script>
+    <script src="./js/components/navigation.js"></script>
+    <script src="./js/auth/auth.js"></script>
+    <script src="./js/dashboards/superadmin.js"></script>
+    <script src="./js/dashboards/admin.js"></script>
+    <script src="./js/dashboards/green-champion.js"></script>
+    <script src="./js/dashboards/worker.js"></script>
+    <script src="./js/dashboards/citizen.js"></script>
+    <script src="./js/features/complaints.js"></script>
+    <script src="./js/features/tracking.js"></script>
+    <script src="./js/features/training.js"></script>
+    <script src="./js/features/ecommerce.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
