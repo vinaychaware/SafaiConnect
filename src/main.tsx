@@ -35,8 +35,14 @@ import './js/features/ecommerce.js';
 // main entry
 import './js/main.js';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+} else {
+  console.error('Root element not found! Did you forget to add <div id="root"></div> in index.html?');
+}
