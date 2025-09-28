@@ -116,15 +116,24 @@ class AuthSystem {
   }
 
   generateUserName(email, role) {
-    const names = {
-      [USER_ROLES.SUPERADMIN]: ['Alex Thompson', 'Sarah Wilson', 'Michael Chen'],
-      [USER_ROLES.ADMIN]: ['David Rodriguez', 'Lisa Johnson', 'James Brown'],
-      [USER_ROLES.GREEN_CHAMPION]: ['Emma Davis', 'Noah Martinez', 'Olivia Anderson'],
-      [USER_ROLES.WORKER]: ['Carlos Garcia', 'Maria Lopez', 'Ahmed Hassan'],
-      [USER_ROLES.CITIZEN]: ['John Smith', 'Jane Doe', 'Robert Johnson']
+    const R = (typeof window.USER_ROLES === 'object') ? window.USER_ROLES : {
+      SUPERADMIN: 'superadmin',
+      ADMIN: 'admin',
+      GREEN_CHAMPION: 'green-champion',
+      WORKER: 'worker',
+      CITIZEN: 'citizen',
     };
 
-    const roleNames = names[role] || ['Demo User'];
+    const names = {
+      [R.SUPERADMIN]: ['Alex Thompson', 'Sarah Wilson', 'Michael Chen'],
+      [R.ADMIN]: ['David Rodriguez', 'Lisa Johnson', 'James Brown'],
+      [R.GREEN_CHAMPION]: ['Emma Davis', 'Noah Martinez', 'Olivia Anderson'],
+      [R.WORKER]: ['Carlos Garcia', 'Maria Lopez', 'Ahmed Hassan'],
+      [R.CITIZEN]: ['John Smith', 'Jane Doe', 'Robert Johnson']
+    };
+
+    const roleKey = String(role).toLowerCase();
+    const roleNames = names[roleKey] || ['Demo User'];
     return roleNames[Math.floor(Math.random() * roleNames.length)];
   }
 
@@ -137,8 +146,12 @@ class AuthSystem {
     navigation.setUser(this.currentUser, this.currentRole);
     
     // Update user info in header
-    document.getElementById('userInfo').textContent = 
-      `${Utils.getUserDisplayName(this.currentUser)} (${Utils.capitalize(this.currentRole.replace('-', ' '))})`;
+    const userInfo = document.getElementById('userInfo');
+    if (userInfo) {
+      const label = `${Utils.getUserDisplayName(this.currentUser)} (${Utils.capitalize(this.currentRole.replace('-', ' '))})`;
+      userInfo.textContent = label;
+      userInfo.title = label; // <-- ensures full name shows on hover
+    }
   }
 
   logout() {

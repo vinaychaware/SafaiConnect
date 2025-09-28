@@ -747,89 +747,119 @@ class WorkerDashboard {
     `;
   }
 
-  renderProfile() {
-    const user = authSystem.getCurrentUser();
-    
+renderProfile() {
+  const u = (window.authSystem?.getCurrentUser && authSystem.getCurrentUser()) || null;
+
+  // If not logged in yet, show a friendly placeholder
+  if (!u) {
     return `
       <div class="dashboard-header">
         <h1 class="dashboard-title">Profile Settings</h1>
-        <p class="dashboard-subtitle">Manage your worker profile and preferences</p>
+        <p class="dashboard-subtitle">Please sign in to view your profile.</p>
       </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Profile Information</h3>
-          </div>
-          <div class="card-body">
-            <div style="text-align: center; margin-bottom: 2rem;">
-              <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 2rem; font-weight: 700;">
-                ${user.name.charAt(0).toUpperCase()}
-              </div>
-              <h3 style="margin-bottom: 0.5rem;">${user.name}</h3>
-              <p style="color: var(--gray-600);">Field Worker</p>
-            </div>
-            <div class="profile-stats">
-              <div style="display: flex; justify-content: between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
-                <span>Employee ID:</span>
-                <strong>WK-001</strong>
-              </div>
-              <div style="display: flex; justify-content: between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
-                <span>Zone Assigned:</span>
-                <strong>Zone A</strong>
-              </div>
-              <div style="display: flex; justify-content: between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
-                <span>Performance Rating:</span>
-                <strong style="color: var(--warning);">4.8 ★</strong>
-              </div>
-              <div style="display: flex; justify-content: between;">
-                <span>Tasks Completed:</span>
-                <strong>247</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Account Settings</h3>
-          </div>
-          <div class="card-body">
-            <form class="profile-form">
-              <div class="form-group" style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Full Name</label>
-                <input type="text" class="form-control" value="${user.name}">
-              </div>
-              <div class="form-group" style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email Address</label>
-                <input type="email" class="form-control" value="${user.email}">
-              </div>
-              <div class="form-group" style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Phone Number</label>
-                <input type="tel" class="form-control" placeholder="Enter phone number">
-              </div>
-              <div class="form-group" style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Zone Assignment</label>
-                <select class="form-control" disabled>
-                  <option>Zone A</option>
-                </select>
-              </div>
-              <div class="form-group" style="margin-bottom: 2rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Emergency Contact</label>
-                <input type="tel" class="form-control" placeholder="Emergency contact number">
-              </div>
-              <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-save"></i>
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
+      <div class="card">
+        <div class="card-body">
+          <p style="color: var(--gray-600)">No user session found.</p>
         </div>
       </div>
     `;
   }
+
+  // Safe values (avoid "undefined")
+  const name  = (u.name && String(u.name).trim()) || 'User';
+  const email = (u.email && String(u.email).trim()) || 'user@example.com';
+  const role  = (window.authSystem?.getCurrentRole && authSystem.getCurrentRole()) || 'worker';
+  const roleLabel = {
+    'superadmin':'Superadmin',
+    'admin':'Admin',
+    'green-champion':'Green champion',
+    'worker':'Field Worker',
+    'citizen':'Citizen'
+  }[String(role).toLowerCase()] || 'User';
+
+  const initial = name.charAt(0).toUpperCase() || 'U';
+
+  return `
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Profile Settings</h1>
+      <p class="dashboard-subtitle">Manage your ${roleLabel.toLowerCase()} profile and preferences</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Profile Information</h3>
+        </div>
+        <div class="card-body">
+          <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 2rem; font-weight: 700;">
+              ${initial}
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">${name}</h3>
+            <p style="color: var(--gray-600);">${roleLabel}</p>
+          </div>
+          <div class="profile-stats">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
+              <span>Employee ID:</span>
+              <strong>${u.employeeId || 'WK-001'}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
+              <span>Zone Assigned:</span>
+              <strong>${u.zone || 'Zone A'}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">
+              <span>Performance Rating:</span>
+              <strong style="color: var(--warning);">${u.rating || '4.8 ★'}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>Tasks Completed:</span>
+              <strong>${u.tasksCompleted ?? 247}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Account Settings</h3>
+        </div>
+        <div class="card-body">
+          <form class="profile-form">
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Full Name</label>
+              <input type="text" class="form-control" value="${name}">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email Address</label>
+              <input type="email" class="form-control" value="${email}">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Phone Number</label>
+              <input type="tel" class="form-control" value="${u.phone || ''}" placeholder="Enter phone number">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Zone Assignment</label>
+              <select class="form-control" disabled>
+                <option>${u.zone || 'Zone A'}</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 2rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Emergency Contact</label>
+              <input type="tel" class="form-control" value="${u.emergencyContact || ''}" placeholder="Emergency contact number">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 
   // Worker-specific methods
   toggleDutyStatus() {

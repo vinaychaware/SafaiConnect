@@ -45,7 +45,7 @@ class CitizenDashboard {
         content.innerHTML = this.renderTraining();
         break;
       case 'profile':
-        content.innerHTML = this.renderProfile();
+        content.innerHTML = this.renderCitizenProfile();
         break;
       default:
         content.innerHTML = this.renderDashboard();
@@ -112,13 +112,9 @@ class CitizenDashboard {
     `;
   }
 
-  generateWeeklySchedule() { /* ... (utility function as provided) ... */ }
+generateWeeklySchedule() { /* ... (utility function as provided) ... */ }
 
-  // --- FEATURE: Complaint Submission with Geotag & Photos ---
-  // This section provides a detailed form for citizens to report issues.
-  // It includes fields for location (with a "Use Current Location" button for geotagging)
-  // and a placeholder for photo uploads.
-  // -----------------------------------------------------------------
+
   renderSubmitComplaint() {
     return `
       <div class="dashboard-header">
@@ -166,10 +162,6 @@ class CitizenDashboard {
     `;
   }
   
-  // --- FEATURE: Complaint & Reward Points Tracking ---
-  // This section allows citizens to view their complaint history, track the status,
-  // see points earned, and rate the service, which helps in tracking collector performance.
-  // -----------------------------------------------------------------
   renderMyComplaints() {
     const complaints = [
       { id: 'C001', title: 'Overflowing bin near school', status: 'resolved', rating: 5, pointsEarned: 25 },
@@ -204,11 +196,6 @@ class CitizenDashboard {
     `;
   }
 
-  // --- FEATURE: Vehicle Tracking with Notification Pop-ups ---
-  // Renders a real-time map to track garbage collection vehicles.
-  // The toggleVehicleTracking() method simulates the start of tracking and
-  // triggers timed notification pop-ups for vehicle proximity and arrival.
-  // -----------------------------------------------------------------
   renderTracking() {
     return `
       <div class="dashboard-header">
@@ -250,13 +237,40 @@ class CitizenDashboard {
   }
 
   // --- Eco Store (Part of Reward System) ---
-  renderShop() { /* ... (code as provided) ... */ }
+renderShop() {
+  const items = [
+    { id: 'eco-bag',     name: 'Reusable Garbage Bags (Set of 10)', points: 120, img: '/assets/shop/bags.png' },
+    { id: 'compost-bin', name: 'Home Compost Bin (15L)',           points: 550, img: '/assets/shop/compost.png' },
+    { id: 'seg-bins',    name: 'Segregation Bin Set (3 Colors)',    points: 700, img: '/assets/shop/bins.png' },
+    { id: 'gloves',      name: 'Biodegradable Gloves (50 pcs)',     points: 90,  img: '/assets/shop/gloves.png' },
+  ];
 
-  // --- FEATURE: Training for Citizens (Duolingo Style) & App ---
-  // Provides a gamified learning experience where citizens can complete
-  // modules on waste management, track their progress, and earn Green Points.
-  // This covers both general training and specific app usage training.
-  // -----------------------------------------------------------------
+  return `
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">Eco Store</h1>
+      <p class="dashboard-subtitle">Redeem items using your Green Points</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;">
+      ${items.map(it => `
+        <div class="card" style="display:flex;flex-direction:column;">
+          <div class="card-body" style="text-align:center;">
+            <img src="${it.img}" alt="${it.name}" style="width:120px;height:120px;object-fit:contain;margin:0 auto 0.75rem;" />
+            <h3 style="font-size:1rem;margin-bottom:0.5rem;">${it.name}</h3>
+            <div style="color:var(--primary);font-weight:600;margin-bottom:0.75rem;">
+              <i class="fas fa-coins"></i> ${it.points} pts
+            </div>
+            <button class="btn btn-primary" data-buy="${it.id}">
+              <i class="fas fa-shopping-cart"></i> Redeem
+            </button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+
   renderTraining() {
     const trainingModules = [
       { id: 'c01', title: 'Waste Segregation Basics', duration: '15 Mins', points: 30 },
@@ -291,11 +305,85 @@ class CitizenDashboard {
   }
   
   // --- User Profile ---
-  renderProfile() { /* ... (code as provided) ... */ }
+ renderCitizenProfile() {
+  const user = authSystem.getCurrentUser();
 
-  // =================================================================================
-  // Citizen-Specific Methods & Event Handlers
-  // =================================================================================
+  return `
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">My Profile</h1>
+      <p class="dashboard-subtitle">View and manage your citizen account</p>
+    </div>
+
+    <div class="profile-grid">
+      <!-- Left Card: Basic Info -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Profile Information</h3>
+        </div>
+        <div class="card-body" style="text-align:center;">
+          <img
+            src="${user.avatar || '/assets/default-avatar.png'}"
+            alt="Profile Picture"
+            class="profile-avatar"
+          />
+          <h4 class="profile-name">${user.name || 'Citizen User'}</h4>
+          <p class="text-muted">${user.email || ''}</p>
+          <p class="text-muted">${user.mobile || ''}</p>
+        </div>
+      </div>
+
+      <!-- Right Card: Editable Details -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Edit Details</h3>
+        </div>
+        <div class="card-body">
+          <form id="citizen-profile-form" class="profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="citizen-name">Full Name</label>
+                <input type="text" id="citizen-name" name="name"
+                  value="${user.name || ''}" class="form-control"
+                  autocomplete="name" />
+              </div>
+
+              <div class="form-group">
+                <label for="citizen-email">Email</label>
+                <input type="email" id="citizen-email" name="email"
+                  value="${user.email || ''}" class="form-control"
+                  autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="citizen-mobile">Mobile Number</label>
+                <input type="tel" id="citizen-mobile" name="mobile"
+                  value="${user.mobile || ''}" class="form-control"
+                  inputmode="tel" autocomplete="tel"
+                  pattern="[0-9\\-\\+\\s()]{6,}" />
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="citizen-address">Address</label>
+                <textarea id="citizen-address" name="address"
+                  class="form-control" rows="3"
+                >${user.address || ''}</textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
 
   getCurrentLocation() {
     notifications.info('Getting Location', 'Detecting your current location...');
@@ -347,5 +435,4 @@ class CitizenDashboard {
   }
 }
 
-// Initialize and export
 window.CitizenDashboard = new CitizenDashboard();
